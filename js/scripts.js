@@ -12,19 +12,39 @@ Board.prototype.checkStatus = function() {
     var xCount = 0;
     var oCount = 0;
     for (var i=0; i<3; i++){
-      if (board.grid[j][i] === "X"){
+      //Check Vertical Wins
+      if (this.grid[j][i] === "X"){
         xCount += 1;
-        if (xCount === 3) {return "Player 1 wins"} //return something
-      } else if (board.grid[j][i] === "O") {
+        if (xCount === 3) {return "Player 1 wins"}
+      } else if (this.grid[j][i] === "O") {
         oCount += 1;
-        if (oCount === 3) {return "Player 2 wins"} //return something
+        if (oCount === 3) {return "Player 2 wins"}
+      }
+    }
+    //Check Horizontal Wins
+    xCount = 0;
+    oCount = 0;
+    for (var i=0; i<3; i++){
+      if (this.grid[i][j] === "X"){
+        xCount += 1;
+        if (xCount === 3) {return "Player 1 wins"}
+      } else if (this.grid[i][j] === "O") {
+        oCount += 1;
+        if (oCount === 3) {return "Player 2 wins"}
       }
     }
   }
-  //Vertical
-  //along x
-  //Horizontal
-  //along y
+  for (var j=0; j<3; j++) {
+    var xCount = 0;
+    var oCount = 0;
+    if (this.grid[j][j] === 'X') {
+      xCount += 1;
+      if (xCount == 3) {return "Player 1 wins"}
+    } else if (this.grid[j][j] === "O") {
+      oCount += 1;
+      if (oCount === 3) {return "Player 2 wins"}
+    }
+  }
   //Diagonal
   //x=y
   //x+y=2

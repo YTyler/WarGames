@@ -1,23 +1,29 @@
   body {
     background-color: #DDDAD9;
     color: black;
+
+  }
+
+  h2 {
+
   }
  .display {
    display: grid;
    grid-template-columns: 1fr 1fr 1fr;
    background-color: #852B17;
+   opacity: 90%;
  }
 .space {
   text-align: center;
   border: 2px solid black;
   padding: 35%;
-
 }
 #title {
   text-align: center;
   font-size: 100px;
   text-decoration: underline;
   text-shadow: 8px 6px grey;
+  bac
 }
 
 #endMessage {

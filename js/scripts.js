@@ -131,7 +131,7 @@ $(document).ready(function(){
       row = parseInt(space[0]);
       col = parseInt(space[1]);
       if (gameBoard.checkMove(row,col)) {
-        $(this).find('h1').text(gameBoard.currentPlayer.mark);
+        $(this).find('h2').text(gameBoard.currentPlayer.mark);
         gameBoard.makeMove(row,col);
         gameBoard.advanceTurn();
       } else {

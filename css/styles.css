@@ -1,11 +1,28 @@
- .container {
+  body {
+    background-color: #DDDAD9;
+    color: black;
+  }
+ .display {
    display: grid;
    grid-template-columns: 1fr 1fr 1fr;
-   background-color: cyan;
+   background-color: #852B17;
  }
 .space {
   text-align: center;
   border: 2px solid black;
   padding: 35%;
 
+}
+#title {
+  text-align: center;
+  font-size: 100px;
+  text-decoration: underline;
+  text-shadow: 8px 6px grey;
+}
+
+#endMessage {
+  text-align: center;
+  font-size: 70px;
+  text-shadow: 4px 4px grey;
+  padding-top: 15px;
 }

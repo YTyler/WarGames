@@ -19,18 +19,18 @@ Board.prototype.checkStatus = function() {
       //Check Negative Diagonal Win
       if (i + j == 2 && this.grid[j][i] === "X") {
         xDiag += 1;
-        if (xDiag === 3) { console.log('Negative Diagonal X'); return 'X';}
+        if (xDiag === 3) { console.log('Negative Diagonal X'); return 1;}
       } else if (i + j == 2 && this.grid[j][i] === "O") {
         oDiag += 1;
-        if (oDiag === 3) { console.log('Negative Diagonal O'); return 'O'}
+        if (oDiag === 3) { console.log('Negative Diagonal O'); return 2}
       }
       //Check Horizontal Wins
       if (this.grid[j][i] === "X"){
         xCount += 1;
-        if (xCount === 3) { console.log('Horizontal X'); return 'X';}
+        if (xCount === 3) { console.log('Horizontal X'); return 1;}
       } else if (this.grid[j][i] === "O") {
         oCount += 1;
-        if (oCount === 3) { console.log('Horizontal O'); return 'O';}
+        if (oCount === 3) { console.log('Horizontal O'); return 2;}
       }
     }
     //Check Vertical Wins
@@ -39,10 +39,10 @@ Board.prototype.checkStatus = function() {
     for (var i=0; i<3; i++){
       if (this.grid[i][j] === "X"){
         xCount += 1;
-        if (xCount === 3) { console.log('Vertical X'); return 'X';}
+        if (xCount === 3) { console.log('Vertical X'); return 1;}
       } else if (this.grid[i][j] === "O") {
         oCount += 1;
-        if (oCount === 3) { console.log('Vertical O'); return 'O';}
+        if (oCount === 3) { console.log('Vertical O'); return 2;}
       }
     }
   }
@@ -52,17 +52,18 @@ Board.prototype.checkStatus = function() {
   for (var j=0; j<3; j++) {
     if (this.grid[j][j] === 'X') {
       xCount += 1;
-      if (xCount === 3) { console.log('Positive Diagonal X'); return 'X';}
+      if (xCount === 3) { console.log('Positive Diagonal X'); return 1;}
     } else if (this.grid[j][j] === "O") {
       oCount += 1;
-      if (oCount === 3) { console.log('Positive Diagonal O'); return 'O';}
+      if (oCount === 3) { console.log('Positive Diagonal O'); return 2;}
     }
   }
   //Check Draw
   if (this.turn>=9){
     console.log("draw = you all lose");
-    return 'D';
+    return 'Draw!';
   }
+  return false;
 }
 
 Board.prototype.advanceTurn = function() {
@@ -109,7 +110,7 @@ player2 = new Player(2);
 gameBoard = new Board(player1, player2);
 
 function endGame(message) {
-  if (message != 'Draw') {
+  if (message != 'Draw!') {
     console.log(message);
     message = "Player " + message + " Wins!"
     return message
@@ -122,39 +123,25 @@ function endGame(message) {
 $(document).ready(function(){
 
 
-//Check and Make a Move
+  //Check and Make a Move
   $('.space').click(function(){
-    space = this['id'];
-    space = space.split(',');
-    row = parseInt(space[0]);
-    col = parseInt(space[1]);
-    if (gameBoard.checkMove(row,col)) {
-      $(this).find('h1').text(gameBoard.currentPlayer.mark);
-      gameBoard.makeMove(row,col);
-    } else {
-      alert('Invalid Choice')
+    if (!gameBoard.checkStatus()) {
+      space = this['id'];
+      space = space.split(',');
+      row = parseInt(space[0]);
+      col = parseInt(space[1]);
+      if (gameBoard.checkMove(row,col)) {
+        $(this).find('h1').text(gameBoard.currentPlayer.mark);
+        gameBoard.makeMove(row,col);
+      } else {
+        alert('Invalid Choice')
+      }
+      if (gameBoard.checkStatus()) {
+        message = endGame(gameBoard.checkStatus());
+        $('#endMessage').html(message);
+      }
+      gameBoard.advanceTurn();
     }
-    switch (gameBoard.checkStatus()) {
-      case 'X':
-      message = endGame(gameBoard.currentPlayer.id);
-      $('#endMessage').html(message);
-      console.log('X switch');
-      break;
-      case 'O':
-      message = endGame(gameBoard.currentPlayer.id);
-      $('#endMessage').html(message);
-      console.log('O switch');
-      break;
-      case 'D':
-      message = endGame('Draw');
-      $('#endMessage').html(message);
-      console.log('DRAW');
-      break;
-      default:
-      console.log('No Win Yet');
-    }
-    gameBoard.advanceTurn();
-
   })
 
 });

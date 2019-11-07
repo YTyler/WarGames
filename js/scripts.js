@@ -59,7 +59,7 @@ Board.prototype.checkStatus = function() {
     }
   }
   //Check Draw
-  if (this.turn>=9){
+  if (this.turn>9){
     console.log("draw = you all lose");
     return 'Draw!';
   }
@@ -133,6 +133,7 @@ $(document).ready(function(){
       if (gameBoard.checkMove(row,col)) {
         $(this).find('h1').text(gameBoard.currentPlayer.mark);
         gameBoard.makeMove(row,col);
+        gameBoard.advanceTurn();
       } else {
         alert('Invalid Choice')
       }
@@ -140,7 +141,6 @@ $(document).ready(function(){
         message = endGame(gameBoard.checkStatus());
         $('#endMessage').html(message);
       }
-      gameBoard.advanceTurn();
     }
   })
 

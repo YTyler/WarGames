@@ -1,5 +1,30 @@
-function Board(p1, p2) {
-  this.grid = [["","",""],["","",""],["","",""]];
+function endGame(message) {
+  if (message != 'Draw!') {
+    console.log(message);
+    message = "Player " + message + " Wins!"
+    return message
+  } else {
+    console.log(message);
+    return message
+  }
+}
+
+function gridsize(gridInput){
+  var tempGridOuter = [];
+  var tempGridInner = [];
+  var unit = "";
+  for (var j = 0; j < gridInput; j++) {
+    for (var i = 0; i < gridInput; i++){
+      tempGridInner.push(unit);
+    }
+    tempGridOuter.push(tempGridInner);
+    tempGridInner = [];
+  }
+  return tempGridOuter;
+}
+
+function Board(p1, p2, size = 3) {
+  this.grid = gridsize(size);
   this.turn = 1;
   this.currentPlayer = p1;
   this.players = [p1, p2]
@@ -10,56 +35,56 @@ Board.prototype.checkStatus = function() {
   //check if the board has winning moves
   var xDiag = 0;
   var oDiag = 0;
-  for (var j=0; j<3; j++) {
+  for (var j=0; j<this.grid.length; j++) {
     var xCount = 0;
     var oCount = 0;
 
-    for (var i=0; i<3; i++){
+    for (var i=0; i<this.grid.length; i++){
 
       //Check Negative Diagonal Win
-      if (i + j == 2 && this.grid[j][i] === "X") {
+      if (i + j == (this.grid.length-1) && this.grid[j][i] === "X") {
         xDiag += 1;
-        if (xDiag === 3) { console.log('Negative Diagonal X'); return 1;}
-      } else if (i + j == 2 && this.grid[j][i] === "O") {
+        if (xDiag === this.grid.length) { console.log('Negative Diagonal X'); return 1;}
+      } else if (i + j == (this.grid.length-1) && this.grid[j][i] === "O") {
         oDiag += 1;
-        if (oDiag === 3) { console.log('Negative Diagonal O'); return 2}
+        if (oDiag === this.grid.length) { console.log('Negative Diagonal O'); return 2}
       }
       //Check Horizontal Wins
       if (this.grid[j][i] === "X"){
         xCount += 1;
-        if (xCount === 3) { console.log('Horizontal X'); return 1;}
+        if (xCount === this.grid.length) { console.log('Horizontal X'); return 1;}
       } else if (this.grid[j][i] === "O") {
         oCount += 1;
-        if (oCount === 3) { console.log('Horizontal O'); return 2;}
+        if (oCount === this.grid.length) { console.log('Horizontal O'); return 2;}
       }
     }
     //Check Vertical Wins
     xCount = 0;
     oCount = 0;
-    for (var i=0; i<3; i++){
+    for (var i=0; i<this.grid.length; i++){
       if (this.grid[i][j] === "X"){
         xCount += 1;
-        if (xCount === 3) { console.log('Vertical X'); return 1;}
+        if (xCount === this.grid.length) { console.log('Vertical X'); return 1;}
       } else if (this.grid[i][j] === "O") {
         oCount += 1;
-        if (oCount === 3) { console.log('Vertical O'); return 2;}
+        if (oCount === this.grid.length) { console.log('Vertical O'); return 2;}
       }
     }
   }
   //Check Positive Diagonal Win
   var xCount = 0;
   var oCount = 0;
-  for (var j=0; j<3; j++) {
+  for (var j=0; j<this.grid.length; j++) {
     if (this.grid[j][j] === 'X') {
       xCount += 1;
-      if (xCount === 3) { console.log('Positive Diagonal X'); return 1;}
+      if (xCount === this.grid.length) { console.log('Positive Diagonal X'); return 1;}
     } else if (this.grid[j][j] === "O") {
       oCount += 1;
-      if (oCount === 3) { console.log('Positive Diagonal O'); return 2;}
+      if (oCount === this.grid.length) { console.log('Positive Diagonal O'); return 2;}
     }
   }
   //Check Draw
-  if (this.turn>9){
+  if (this.turn>(this.grid.length*this.grid.length)){
     console.log("draw = you all lose");
     return 'Draw!';
   }
@@ -107,24 +132,34 @@ Player.prototype.checkPlayerId = function(id) {
 
 player1 = new Player(1);
 player2 = new Player(2);
-gameBoard = new Board(player1, player2);
 
-function endGame(message) {
-  if (message != 'Draw!') {
-    console.log(message);
-    message = "Player " + message + " Wins!"
-    return message
-  } else {
-    console.log(message);
-    return message
-  }
-}
+
+
 
 $(document).ready(function(){
+  //Build HTML grid
+  $('#gridButton').click(function() {
+    choice = $('.gridChoice').val();
+    gameBoard = new Board(player1, player2, choice);
+
+    console.log(choice);
+    display = $('#display');
+    display.html("");
+    var frameCount = '';
+    console.log(gameBoard.grid.length-1);
+    for (var j = 0; j < gameBoard.grid.length; j++) {
+      frameCount += '1fr ';
+      for (var i = 0; i < gameBoard.grid.length; i++) {
+        display.append(`<div class="space" id=${j},${i}><h2><br></h2></div>`);
+      }
+    }
+    display.css("grid-template-columns", frameCount)
+  })
+
 
 
   //Check and Make a Move
-  $('.space').click(function(){
+  $('#display').on('click', ".space", function() {
     if (!gameBoard.checkStatus()) {
       space = this['id'];
       space = space.split(',');

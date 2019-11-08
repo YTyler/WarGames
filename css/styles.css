@@ -3,16 +3,15 @@
     color: black;
 
   }
-
-  h2 {
-
-  }
- .display {
+ #display {
    display: grid;
-   grid-template-columns: 1fr 1fr 1fr;
+   grid-template-columns: ;
    background-color: #852B17;
    opacity: 90%;
  }
+
+
+
 .space {
   text-align: center;
   border: 2px solid black;
@@ -31,4 +30,9 @@
   font-size: 70px;
   text-shadow: 4px 4px grey;
   padding-top: 15px;
+}
+
+#buttons {
+  margin: 15px;
+  text-align: center;
 }
